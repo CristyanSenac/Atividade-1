@@ -154,6 +154,7 @@ public class cadastroVIEW extends javax.swing.JFrame {
         }
 
         this.lista.add(new Produto(produto, valor));
+        JOptionPane.showMessageDialog(null, "Produto cadastrado com sucesso");
         this.atualizaListagem();
         
     }//GEN-LAST:event_btnSalvarActionPerformed
