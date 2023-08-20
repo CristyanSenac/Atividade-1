@@ -8,6 +8,8 @@ import com.mycompany.mavenproject1.model.Produto;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 /**
  *
@@ -23,6 +25,7 @@ public class cadastroVIEW extends javax.swing.JFrame {
     public cadastroVIEW(List<Produto> lista) {
         initComponents();
         this.lista = lista;
+        this.atualizaListagem();
     }
 
     /**
@@ -41,6 +44,8 @@ public class cadastroVIEW extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         btnSalvar = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblProdutos = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -56,6 +61,19 @@ public class cadastroVIEW extends javax.swing.JFrame {
                 btnSalvarActionPerformed(evt);
             }
         });
+
+        tblProdutos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Nome", "Valor"
+            }
+        ));
+        jScrollPane1.setViewportView(tblProdutos);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -76,6 +94,7 @@ public class cadastroVIEW extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 91, Short.MAX_VALUE)
                 .addComponent(btnSalvar)
                 .addGap(58, 58, 58))
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 431, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -95,7 +114,9 @@ public class cadastroVIEW extends javax.swing.JFrame {
                         .addComponent(btnSalvar)))
                 .addGap(34, 34, 34)
                 .addComponent(jLabel3)
-                .addContainerGap(209, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -178,10 +199,25 @@ public class cadastroVIEW extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable tblProdutos;
     private javax.swing.JTextField txtProduto;
     private javax.swing.JTextField txtValor;
     // End of variables declaration//GEN-END:variables
 
     private void atualizaListagem() {
-    }
+     DefaultTableModel tabelaProdutos = (DefaultTableModel) tblProdutos.getModel();
+   tblProdutos.setRowSorter(new TableRowSorter(tabelaProdutos));
+   tabelaProdutos.setNumRows(0);
+            
+    lista.forEach(p -> {
+                       String [] linha = {
+                          p.getNome(),
+                          p.getValor().toString()
+                    };
+                              
+                tabelaProdutos.addRow(linha);
+                });  
+  
+}
 }
