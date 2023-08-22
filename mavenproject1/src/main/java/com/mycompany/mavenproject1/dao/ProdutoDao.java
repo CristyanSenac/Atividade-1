@@ -58,6 +58,44 @@ public class ProdutoDao {
         }
         
         return tipo;
-    }                     
+    }  
+    
+    public void venderProduto(String id){
+        EntityManager em = JPAUtil.getEntityManager();
+        
+        Produto produto = getProduto(id);
+        produto.setStatus(getStatusPedido(2));
+        
+        try{
+            em.getTransaction().begin();
+            em.persist(produto);
+            em.getTransaction().commit();
+        }catch(Exception e){
+            em.getTransaction().rollback();
+            System.out.println("Erro ao atualizar dados: " + e.getMessage());
 
+        }finally{
+            JPAUtil.closeEtityManager();
+        }
+    }
+
+    public Produto getProduto(String id){
+        Produto produto = null;
+        EntityManager em = JPAUtil.getEntityManager();
+        String query = "SELECT p FROM produto p WHERE p.id = :id";
+        
+        try{
+            TypedQuery<Produto> typedQuery = em.createQuery(query, Produto.class);
+            typedQuery.setParameter("id", id);
+            produto = typedQuery.getSingleResult();
+
+        }catch(Exception e){
+            System.out.println("Erro ao buscar dados: " + e.getMessage());
+        }finally{
+            em.close();
+            JPAUtil.closeEtityManager();
+        }
+        
+        return produto;
+       }
 }

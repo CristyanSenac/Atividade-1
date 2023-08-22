@@ -62,6 +62,16 @@ public class Produto {
     public Long getId() {
         return id;
     }
+
+    public void setStatus(StatusPedido status) {
+        this.status = status;
+    }
+
+    public StatusPedido getStatus() {
+        return status;
+    }
+    
+    
     
     
     
