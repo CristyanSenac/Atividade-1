@@ -4,7 +4,9 @@
  */
 package com.mycompany.mavenproject1.views;
 
+import com.mycompany.mavenproject1.dao.ProdutoDao;
 import com.mycompany.mavenproject1.model.Produto;
+import com.mycompany.mavenproject1.model.StatusPedido;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -152,8 +154,11 @@ public class cadastroVIEW extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "O valor deve ser numérico");
             return;
         }
-
-        this.lista.add(new Produto(produto, valor));
+        
+        ProdutoDao dao = new ProdutoDao();
+        StatusPedido status = dao.getStatusPedido(1);
+        Produto produtoDto = new Produto(produto, valor, status);
+        dao.salvar(produtoDto);
         JOptionPane.showMessageDialog(null, "Produto cadastrado com sucesso");
         this.atualizaListagem();
         

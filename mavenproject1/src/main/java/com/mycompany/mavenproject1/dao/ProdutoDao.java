@@ -6,13 +6,10 @@ package com.mycompany.mavenproject1.dao;
 
 
 import com.mycompany.mavenproject1.model.Produto;
+import com.mycompany.mavenproject1.model.StatusPedido;
 import com.mycompany.mavenproject1.util.JPAUtil;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 /**
  *
@@ -41,5 +38,26 @@ public class ProdutoDao {
         
     }
 
+    public StatusPedido getStatusPedido(Integer id){
+        StatusPedido tipo = null;
+        EntityManager em = JPAUtil.getEntityManager();
+        String query = "SELECT sp FROM StatusPedido sp WHERE id = :id";
+
+
+        
+
+        try{
+            TypedQuery<StatusPedido> typedQuery = em.createQuery(query, StatusPedido.class);
+            typedQuery.setParameter("id", id );
+            tipo = typedQuery.getSingleResult();
+
+        }catch(Exception e){
+            System.out.println("Erro ao buscar dados: " + e.getMessage());
+        }finally{
+            JPAUtil.closeEtityManager();
+        }
+        
+        return tipo;
+    }                     
 
 }

@@ -18,8 +18,8 @@ public class Mavenproject1 {
     public static void main(String[] args) {
         List<Produto> lista = new ArrayList<>();
         
-        lista.add(new Produto("Carro de luxo", 250000.00));
-        lista.add(new Produto("Troféu copa do mundo", 380000.89));
+       // lista.add(new Produto("Carro de luxo", 250000.00));
+        //lista.add(new Produto("Troféu copa do mundo", 380000.89));
                 
         new cadastroVIEW(lista).setVisible(true);
     }

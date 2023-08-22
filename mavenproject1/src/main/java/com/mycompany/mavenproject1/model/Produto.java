@@ -5,12 +5,11 @@
 package com.mycompany.mavenproject1.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 
 /**
  *
@@ -21,9 +20,8 @@ import javax.persistence.GenerationType;
 public class Produto {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
     private Long id;
-    
     private String nome;
     private Double valor;
     
@@ -31,10 +29,15 @@ public class Produto {
     @JoinColumn(name = "status_pedido_id")
     private StatusPedido status;
 
-    public Produto(String produto, double valor) {
+    public Produto(String produto, double valor, StatusPedido status) {
         this.nome = produto;
         this.valor = valor;
+        this.status = status;
     }
+
+    public Produto() {
+    }
+
 
     public String getNome() {
         return nome;
@@ -51,6 +54,16 @@ public class Produto {
     public void setValor(Double valor) {
         this.valor = valor;
     }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
+    }
+    
+    
     
     
     

@@ -5,19 +5,19 @@
 package com.mycompany.mavenproject1.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 
 /**
  *
  * @author Cristyan
  */
 
-@Entity
+@Entity(name = "StatusPedido")
 @Table(name = "status_pedido")
-class StatusPedido {
+public class StatusPedido {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
