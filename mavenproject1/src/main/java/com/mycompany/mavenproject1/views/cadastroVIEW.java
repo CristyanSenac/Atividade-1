@@ -18,15 +18,12 @@ import javax.swing.table.TableRowSorter;
  * @author Cristyan
  */
 public class cadastroVIEW extends javax.swing.JFrame {
-
-    private List<Produto> lista = new ArrayList<>();
-
+    ProdutoDao dao = new ProdutoDao();
     /**
      * Creates new form cadastroVIEW
      */
-    public cadastroVIEW(List<Produto> lista) {
+    public cadastroVIEW() {
         initComponents();
-        this.lista = lista;
         this.atualizaListagem();
     }
 
@@ -48,6 +45,8 @@ public class cadastroVIEW extends javax.swing.JFrame {
         btnSalvar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblProdutos = new javax.swing.JTable();
+        btnVender = new javax.swing.JButton();
+        btnVendidos = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -72,30 +71,44 @@ public class cadastroVIEW extends javax.swing.JFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "Nome", "Valor"
+                "Id" ,"Nome", "Valor", "Status"
             }
         ));
         jScrollPane1.setViewportView(tblProdutos);
+
+        btnVender.setText("Vender Produto");
+
+        btnVendidos.setText("Itens Vendidos");
+        btnVendidos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVendidosActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(29, 29, 29)
+                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel3)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtValor, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE)
-                            .addComponent(txtProduto))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 91, Short.MAX_VALUE)
-                .addComponent(btnSalvar)
-                .addGap(58, 58, 58))
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2)
+                    .addComponent(btnVendidos))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(txtValor, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE)
+                        .addComponent(txtProduto))
+                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnSalvar)
+                        .addGap(58, 58, 58))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnVender)
+                        .addGap(21, 21, 21))))
             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 431, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
@@ -114,10 +127,17 @@ public class cadastroVIEW extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(33, 33, 33)
                         .addComponent(btnSalvar)))
-                .addGap(34, 34, 34)
-                .addComponent(jLabel3)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(31, 31, 31)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(btnVender)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(btnVendidos)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 187, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -154,15 +174,21 @@ public class cadastroVIEW extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "O valor deve ser numérico");
             return;
         }
-        
+
         ProdutoDao dao = new ProdutoDao();
         StatusPedido status = dao.getStatusPedido(1);
         Produto produtoDto = new Produto(produto, valor, status);
         dao.salvar(produtoDto);
         JOptionPane.showMessageDialog(null, "Produto cadastrado com sucesso");
         this.atualizaListagem();
-        
+
     }//GEN-LAST:event_btnSalvarActionPerformed
+
+    private void btnVendidosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVendidosActionPerformed
+        new itensVendidosVIEW().setVisible(true);
+        dispose();
+        
+    }//GEN-LAST:event_btnVendidosActionPerformed
 
     /**
      * @param args the command line arguments
@@ -194,13 +220,15 @@ public class cadastroVIEW extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new cadastroVIEW(new ArrayList<>()).setVisible(true);
+                new cadastroVIEW().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSalvar;
+    private javax.swing.JButton btnVender;
+    private javax.swing.JButton btnVendidos;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -212,18 +240,22 @@ public class cadastroVIEW extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void atualizaListagem() {
-     DefaultTableModel tabelaProdutos = (DefaultTableModel) tblProdutos.getModel();
-   tblProdutos.setRowSorter(new TableRowSorter(tabelaProdutos));
-   tabelaProdutos.setNumRows(0);
-            
-    lista.forEach(p -> {
-                       String [] linha = {
-                          p.getNome(),
-                          p.getValor().toString()
-                    };
-                              
-                tabelaProdutos.addRow(linha);
-                });  
-  
-}
+        List<Produto> lista = dao.listarProdutos();
+      
+        DefaultTableModel tabelaProdutos = (DefaultTableModel) tblProdutos.getModel();
+        tblProdutos.setRowSorter(new TableRowSorter(tabelaProdutos));
+        tabelaProdutos.setNumRows(0);
+
+        lista.forEach(p -> {
+            String[] linha = {
+                p.getId().toString(),
+                p.getNome(),
+                p.getValor().toString(),
+                p.getStatus().getStatus()
+            };
+
+            tabelaProdutos.addRow(linha);
+        });
+
+    }
 }
