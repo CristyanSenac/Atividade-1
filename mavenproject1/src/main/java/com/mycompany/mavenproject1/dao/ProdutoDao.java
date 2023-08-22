@@ -56,15 +56,13 @@ public class ProdutoDao {
         return tipo;
     }
 
-    public void venderProduto(String id) {
-        EntityManager em = JPAUtil.getEntityManager();
-
-        Produto produto = getProduto(id);
+    public void venderProduto(Produto produto) {
         produto.setStatus(getStatusPedido(2));
-
+        EntityManager em = JPAUtil.getEntityManager();
+      
         try {
             em.getTransaction().begin();
-            em.persist(produto);
+            em.merge(produto);
             em.getTransaction().commit();
         } catch (Exception e) {
             em.getTransaction().rollback();

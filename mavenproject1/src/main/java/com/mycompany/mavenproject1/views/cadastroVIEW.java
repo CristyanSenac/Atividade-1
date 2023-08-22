@@ -18,7 +18,9 @@ import javax.swing.table.TableRowSorter;
  * @author Cristyan
  */
 public class cadastroVIEW extends javax.swing.JFrame {
+
     ProdutoDao dao = new ProdutoDao();
+
     /**
      * Creates new form cadastroVIEW
      */
@@ -77,6 +79,11 @@ public class cadastroVIEW extends javax.swing.JFrame {
         jScrollPane1.setViewportView(tblProdutos);
 
         btnVender.setText("Vender Produto");
+        btnVender.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVenderActionPerformed(evt);
+            }
+        });
 
         btnVendidos.setText("Itens Vendidos");
         btnVendidos.addActionListener(new java.awt.event.ActionListener() {
@@ -187,8 +194,35 @@ public class cadastroVIEW extends javax.swing.JFrame {
     private void btnVendidosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVendidosActionPerformed
         new itensVendidosVIEW().setVisible(true);
         dispose();
-        
+
     }//GEN-LAST:event_btnVendidosActionPerformed
+
+    private void btnVenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVenderActionPerformed
+        String status = null;
+
+        try {
+            status = (String) tblProdutos.getValueAt(tblProdutos.getSelectedRow(), 3);
+        } catch (IndexOutOfBoundsException e) {
+            JOptionPane.showMessageDialog(null, "Nenhum produto foi selecionado!");
+            return;
+        }
+
+        if (status.equals("VENDIDO")) {
+            JOptionPane.showMessageDialog(null, "O produto já está vendido!");
+            return;
+        }
+
+ 
+
+        String idProduto = (String) tblProdutos.getValueAt(tblProdutos.getSelectedRow(), 0);
+
+        Produto produto = dao.getProduto(idProduto);
+        dao.venderProduto(produto);
+        this.atualizaListagem();
+
+        JOptionPane.showMessageDialog(null, "Produto atualizado com sucesso!");
+
+    }//GEN-LAST:event_btnVenderActionPerformed
 
     /**
      * @param args the command line arguments
@@ -241,7 +275,7 @@ public class cadastroVIEW extends javax.swing.JFrame {
 
     private void atualizaListagem() {
         List<Produto> lista = dao.listarProdutos();
-      
+
         DefaultTableModel tabelaProdutos = (DefaultTableModel) tblProdutos.getModel();
         tblProdutos.setRowSorter(new TableRowSorter(tabelaProdutos));
         tabelaProdutos.setNumRows(0);
